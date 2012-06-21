@@ -10,6 +10,7 @@ class uuid;
 } // namespace boost
 
 namespace services {
+class AbstractService;
 
 class BaseServiceMeta
 {
@@ -34,6 +35,7 @@ public:
   {
     return m_description;
   }
+  bool addDependant(AbstractService* dependantPtr);
 };
 
 template <class InterfaceClass>

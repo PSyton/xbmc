@@ -4,15 +4,6 @@
 
 namespace services {
 
-class BaseInterfaceMixin
-{
-protected:
-  InterfaceStorage& rootStorage(AbstractService* aRootService)
-  {
-    return aRootService->storage();
-  }
-};
-
 template <InterfaceClass>
 class InterfaceMixin
   : public InterfaceClass 

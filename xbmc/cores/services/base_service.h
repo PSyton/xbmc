@@ -12,10 +12,22 @@ class BaseService
 {
   InterfaceStorage m_storage;
   bool m_initialized;
+  DependancyHolder m_dependancyHolder;
 protected:
   virtual InterfaceStorage& storage()
   {
     return m_storage;
+  }
+  virtual void shutdown()
+  {
+    // First finish dependant services...
+    while (m_dependancyHolder.size())
+    {
+      ServicePtr<AbstractService> ptr(m_dependancyHolder.pop());
+      if (ptr)
+        ptr->shutdown();
+    }
+    onShutdown();
   }
 public:
   BaseService()
@@ -32,37 +44,35 @@ public:
   {
     return true;
   }
-  virtual bool testDependences()
+  virtual bool resolveDependances()
   {
+    // Base implementation nas no dependences...
     return true;
   }
-  virtual bool addDependant(boost::uuids::uuid& depUuid, DependancyHolder* holderPtr)
+  virtual bool addDependant(const boost::uuids::uuid& depUuid)
   {
-    if (depUuid.is_nul())
-      return false;
-    m_dependancyHolder.add(depUuid, holderPtr);
-    return m_dependancyHolder.checkDependences();
+    m_dependancyHolder.addDependant(depUuid)
+    return checkDependancesTree();
   }
-  virtual void removeDependant(boost::uuids::uuid& depUuid)
+  virtual void removeDependant(const boost::uuids::uuid& depUuid)
   {
-    m_dependancyHolder.remove(depUuid);
+    m_dependancyHolder.removeDependant(depUuid);
   }
-  virtual bool registerDependancy(boost::uuids::uuid& depUuid)
+  virtual bool checkDependancesTree()
   {
-    ServicePtr ptr(depUuid);
-    if (!ptr)
-      return false;
-    return ptr->addDependant(rootUuid(), &m_dependancyHolder);
+    return m_dependancyHolder.checkDependances();
   }
-  template <class ServiceInterface>
-  bool registerDependancy()
+  virtual bool dependsOf(const boost::uuids::uuid& depUuid)
   {
-    return registerDependancy(ServiceInterface::rootUuid());
+    ServicePtr<AbstractService> ptr(depUuid);
+    if (ptr)
+      return ptr->addDependant(this->uuid());
+    return false;
   }
-  virtual void onInitComplete()
+  virtual void onInit()
   {
   }
-  virtual void onBeforeShutdown()
+  virtual void onShutdown()
   {
   }
   virtual bool isInitialized() const

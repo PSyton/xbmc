@@ -11,5 +11,10 @@ BaseServiceMeta::BaseServiceMeta(const char* sUuid, const CStdString& sName, con
 {
 }
 
+bool BaseServiceMeta::addDependant(AbstractService* dependantPtr)
+{
+  return false;
+}
+
 
 } // namespace services

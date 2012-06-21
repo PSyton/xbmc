@@ -8,6 +8,11 @@ class PtrInvoker
 {
   PointerType* m_ptr;
   typedef PtrInvoker<PointerType> ThisClass;
+protected:
+  void set(PointerType* p)
+  {
+    m_ptr = p;
+  }
 public:
   PtrInvoker(PointerType* ptr)
     : m_ptr(ptr)
