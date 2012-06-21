@@ -1,9 +1,8 @@
 #pragma once
 #include "ptr_invoker.h"
+#include "core.h"
 
 namespace services {
-
-class Core;
 
 class CorePtr
   : public PtrInvoker<Core>

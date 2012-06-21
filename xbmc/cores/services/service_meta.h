@@ -2,13 +2,6 @@
 #include "utils/StdString.h"
 #include <boost/uuid/uuid.hpp>
 
-
-namespace boost {
-namespace uuids {
-class uuid;
-} // namespace uuids
-} // namespace boost
-
 namespace services {
 class AbstractService;
 
