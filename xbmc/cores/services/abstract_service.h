@@ -2,7 +2,6 @@
 #include <boost/uuid/uuid.hpp>
 #include "service_meta.h"
 
-
 namespace services {
 class DependancyHolder;
 
@@ -32,11 +31,13 @@ public:
   virtual void setInitilizationStatus(bool status) = 0;
 };
 
+} // namespace services
+
 #define DECLARE_SERVICE_ENTRY(ParentIFace, IFaceClass, uuidString, n, d) \
 private:\
-  static const BaseServiceMeta& meta()\
+  static const services::BaseServiceMeta& meta()\
   {\
-    statuc ServiceMeta<IFaceClass> s_meta(uuidString, CStdString(n), CStdString(d));\
+    static services::SerivceMeta<IFaceClass> s_meta(uuidString, CStdString(n), CStdString(d));\
     return s_meta;\
   }\
 protected:\
@@ -47,11 +48,7 @@ protected:\
   }\
 public:\
   static const boost::uuids::uuid& rootUuid() { return meta().uuid(); }\
-  virtual StdString description() const { return meta().name(); }\
-  virtual StdString name() const { return return meta().description() }\
+  virtual const CStdString& description() const { return meta().name(); }\
+  virtual const CStdString& name() const { return meta().description(); }\
 private:\
-
-
-
-} // namespace services
 

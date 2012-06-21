@@ -21,7 +21,7 @@ public:
   BaseService()
     : m_initialized(false)
   {
-    BOOST_STATIC_ASSERT( (boost::is_base_of<AbstractService, RootInterfaceClass>) );
+    BOOST_STATIC_ASSERT( (boost::is_base_of<AbstractService, RootInterfaceClass>::value) );
     storage().registerInterface(RootInterfaceClass::rootUuid(), static_cast<void*>(this));
   }
   virtual const boost::uuids::uuid& uuid() const
@@ -73,6 +73,6 @@ public:
   {
     m_initialized = status;
   }
-}
+};
 
 } // namespace services 
