@@ -20,6 +20,7 @@ public:
   bool ref();
   bool deref();
   bool testAndSet(long expectedValue, long newValue);
+  long fetchAndStore(long newValue);
   long add(long valueToAdd);
   long sub(long valueToSub);
 };

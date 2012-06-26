@@ -19,7 +19,7 @@ public:
   //! Invoke finished
   void leave();
   bool isLocked();
-  void waitFor();
+  bool waitFor();
 };
 
 } // namespace core

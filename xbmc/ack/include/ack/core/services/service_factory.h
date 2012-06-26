@@ -71,14 +71,14 @@ public:
       servicePtr = 0;
     }
   }
-  UuidList uuidsList() const
+  virtual UuidsList uuidsList() const
   {
-    UuidList list;
+    UuidsList list;
     for (Creators::const_iterator it = m_creators.begin(); it != m_creators.end(); ++it)
       list.push_back(it->first);
     return list;
   }
-  bool canCreate(const boost::uuids::uuid& aUuid) const
+  virtual bool canCreate(const boost::uuids::uuid& aUuid) const
   {
     return (m_creators.find(aUuid) != m_creators.end());
   }
