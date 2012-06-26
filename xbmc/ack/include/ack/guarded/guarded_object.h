@@ -11,6 +11,7 @@ protected:
   virtual ~GuardedObject() {}
   virtual void WARNING_this_object_MUST_be_created_with_GuardedFactory() = 0;
 public:
+  virtual void safeDelete() = 0;
   detail::GuardObject guard() const
   {
     return m_guard;

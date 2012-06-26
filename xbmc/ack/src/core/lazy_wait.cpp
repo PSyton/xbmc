@@ -17,14 +17,8 @@ bool lazy_wait(const WaitCondition& condition, unsigned long msecsInterval, unsi
 
   if(i < 100)
     return waitSuccess;
-  else
-  {
-    Sleep(0);
-    if(!condition())
-      return waitSuccess;
-  }
-
-  while(condition())
+  // Wait for changes of condition or timeout reached
+  do
   {
     Sleep(msecsInterval);
     msecsWaited += msecsInterval;
@@ -34,7 +28,7 @@ bool lazy_wait(const WaitCondition& condition, unsigned long msecsInterval, unsi
       waitSuccess = false;
       break;
     }
-  }
+  } while(condition());
   return waitSuccess;
 }
 

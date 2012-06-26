@@ -6,6 +6,11 @@
 namespace ack {
 namespace detail {
 
+#define DESTROYED_STATE 0l
+#define CONSTRUCTION_STATE 1l
+#define GUARDED_STATE 2l
+#define PENDING_DELETE_STATE 3l
+
 class GuardObject
 {
   typedef NonGuardedPointer<core::AtomicInt> GuardPtr;
@@ -13,33 +18,42 @@ class GuardObject
   mutable core::InvokeCount m_counter; //!< критическая секция
 public:
   GuardObject()
-    : m_ptr(creator(1))
+    : m_ptr(creator(CONSTRUCTION_STATE))
   {}
-
   core::InvokeCount& counter() const
   {
     return m_counter;
   }
-
   void addGuard()
   {
-    m_ptr->ref();
+    bool success = m_ptr->testAndSet(CONSTRUCTION_STATE, GUARDED_STATE);
+    assert(success);
+  }
+  void pendingDelete()
+  {
+    bool success = m_ptr->testAndSet(GUARDED_STATE, PENDING_DELETE_STATE);
+    assert(success);
   }
   void releaseGuard()
   {
-    m_ptr->deref();
+    bool success = m_ptr->testAndSet(PENDING_DELETE_STATE, DESTROYED_STATE);
+    assert(success);
   }
   bool isGuarded() const
   {
-    return (*m_ptr == 2l);
+    return (*m_ptr == GUARDED_STATE);
   }
   bool isConstructing() const
   {
-    return (*m_ptr == 1l);
+    return (*m_ptr == CONSTRUCTION_STATE);
+  }
+  bool destroyAfterInvoke() const
+  {
+    return (*m_ptr == PENDING_DELETE_STATE);
   }
   bool isDestroyed() const
   {
-    return (*m_ptr == 0l);
+    return (*m_ptr == DESTROYED_STATE);
   }
 };
 

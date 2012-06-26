@@ -39,13 +39,14 @@ bool InvokeCount::isLocked()
   return !m_guard->testAndSet(0, 0);
 }
 
-void InvokeCount::waitFor()
+bool InvokeCount::waitFor()
 {
-  if ( !lazy_wait( bind_method( &InvokeCount::isLocked, this ) ) )
-  {
-    // log about it here...
-    assert(0);
-  }
+  return lazy_wait( bind_method( &InvokeCount::isLocked, this ) );
+//  if ( ! )
+//  {
+//    // log about it here...
+//    assert(0);
+//  }
 }
 
 

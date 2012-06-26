@@ -37,6 +37,10 @@ public:
   {
     return m_guard.isConstructing();
   }
+  bool destroyAfterInvoke() const
+  {
+    return m_guard.destroyAfterInvoke();
+  }
   GuardedObject* object() const
   {
     return m_object;

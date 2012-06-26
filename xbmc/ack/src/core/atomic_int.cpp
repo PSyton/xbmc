@@ -60,6 +60,15 @@ long AtomicInt::sub(long valueToSub)
   return AtomicSubtract(&m_value, valueToSub);
 }
 
+long AtomicInt::fetchAndStore(long newValue)
+{
+  long old_val;
+  do {
+    old_val = m_value;
+  } while (cas(&m_value, old_val, newValue) != old_val);
+  return old_val;
+}
+
 
 } // namespace core
 } // namespace ack

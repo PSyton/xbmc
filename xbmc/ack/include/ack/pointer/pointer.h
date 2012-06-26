@@ -3,6 +3,8 @@
 #include "ack/pointer/base_pointer.h"
 #include "ack/creators.h"
 #include "ack/guarded/guarded_factory.h"
+#include "ack/method/detail/select_type.h"
+#include <boost/type_traits/is_base_of.hpp>
 
 namespace ack {
 
@@ -21,7 +23,7 @@ namespace ack {
  * \endcode
  */
 template <class T
-, class DelStrat = detail::DefaultDeleteStrategy
+, class DelStrat = typename detail::select_type<boost::is_base_of<GuardedObject, T>::value, detail::GuardedDeleteStrategy, detail::DefaultDeleteStrategy>::type
 , template <class, template <class> class CreateStrategy> class InitializerStrategy = detail::PointerCreator >
 class Pointer
   : public BasePointer<T, T, DelStrat, GuardedFactory<T> >
@@ -94,7 +96,7 @@ public:
 namespace boost {
 
 //! get_pointer() enables boost::mem_fn to recognize smart pointer
-template<class T> inline T* get_pointer(::ack::Pointer<T, ack::detail::DefaultDeleteStrategy> const & p)
+template<class T> inline T* get_pointer(::ack::Pointer<T, typename ::ack::detail::select_type<boost::is_base_of<::ack::GuardedObject, T>::value, ::ack::detail::GuardedDeleteStrategy, ::ack::detail::DefaultDeleteStrategy>::type> const & p)
 {
   return p.get();
 }

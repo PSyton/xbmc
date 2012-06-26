@@ -8,6 +8,7 @@ namespace ack {
 namespace detail {
 
 struct DefaultDeleteStrategy {};
+struct GuardedDeleteStrategy {};
 
 template <class T, class Strategy>
 struct Destroyer
@@ -24,6 +25,15 @@ struct Destroyer<T, DefaultDeleteStrategy>
   static void destroy(T* objPtr)
   {
     boost::checked_delete( objPtr );
+  }
+};
+
+template <class T>
+struct Destroyer<T, GuardedDeleteStrategy>
+{
+  static void destroy(T* objPtr)
+  {
+    objPtr->safeDelete();
   }
 };
 

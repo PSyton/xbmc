@@ -56,7 +56,20 @@ class HandlerPool
   {
     return 10000;
   }
-
+  class SafeDeleter
+  {
+    HandlerType m_handler;
+  private:
+    SafeDeleter(const HandlerType& h)
+      : m_handler(h)
+    {
+    }
+    ~SafeDeleter()
+    {
+      if (m_handler.destroyAfterInvoke() && m_handler.object())
+        m_handler.object()->safeDelete();
+    }
+  };
 public:
   HandlerPool()
   {}
@@ -121,7 +134,10 @@ public:
         if ( ( *it ).isDestroyed() )
           m_list.erase(it++);
         else
+        {
+          SafeDeleter deleter( *it );
           ( *(it++) )();
+        }
       }
       return;
     }
@@ -148,7 +164,10 @@ public:
         if ( ( *it ).isDestroyed() )
           m_list.erase( it++ );
         else
+        {
+          SafeDeleter deleter( *it );
           ( *(it++) )( arg1 ); 
+        }
       }
       return;
     }
@@ -174,7 +193,10 @@ public:
         if ( ( *it ).isDestroyed() )
           m_list.erase( it++ );
         else
+        {
+          SafeDeleter deleter( *it );
           ( *(it++) )( arg1, arg2 ); 
+        }
       }
       return;
     }
@@ -201,7 +223,10 @@ public:
         if ( ( *it ).isDestroyed() )
           m_list.erase( it++ );
         else
+        {
+          SafeDeleter deleter( *it );
           ( *(it++) )( arg1, arg2, arg3 ); 
+        }
       }
       return;
     }
@@ -228,7 +253,10 @@ public:
         if ( ( *it ).isDestroyed() )
           m_list.erase( it++ );
         else
+        {
+          SafeDeleter deleter( *it );
           ( *(it++) )( arg1, arg2, arg3, arg4 ); 
+        }
       }
       return;
     }
@@ -254,7 +282,10 @@ public:
         if ( ( *it ).isDestroyed() )
           m_list.erase( it++ );
         else
+        {
+          SafeDeleter deleter( *it );
           ( *(it++) )( arg1, arg2, arg3, arg4, arg5 ); 
+        }
       }
       return;
     }

@@ -56,14 +56,17 @@ protected:
   {
     GuardedObject::guard().addGuard();
   }
-
+  void safeDelete()
+  {
+    GuardedObject::guard().pendingDelete();
+    if (GuardedObject::guard().counter().waitFor()) // We not in invoke phase can delete...
+      delete this;
+  }
+protected:
   virtual ~GuardWrapper()
   {
     GuardedObject::guard().releaseGuard();
-    GuardedObject::guard().criticalSection().waitFor();
   }
-
-protected:
   void WARNING_this_object_MUST_be_created_with_GuardedFactory()
   {}
 };
