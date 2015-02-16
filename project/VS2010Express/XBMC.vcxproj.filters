@@ -3110,6 +3110,9 @@
     <ClCompile Include="..\..\xbmc\dialogs\GUIDialogSimpleMenu.cpp">
       <Filter>dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\xbmc\music\tags\ReplayGain.cpp">
+      <Filter>music\tags</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\xbmc\win32\pch.h">
@@ -6050,6 +6053,9 @@
     </ClInclude>
     <ClInclude Include="..\..\xbmc\dialogs\GUIDialogSimpleMenu.h">
       <Filter>dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xbmc\music\tags\ReplayGain.h">
+      <Filter>music\tags</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
