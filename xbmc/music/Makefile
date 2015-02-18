@@ -6,6 +6,7 @@ SRCS=Album.cpp \
      MusicInfoLoader.cpp \
      MusicThumbLoader.cpp \
      Song.cpp \
+     CueInfoLoader.cpp \
      
 LIB=music.a
 
