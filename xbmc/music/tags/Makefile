@@ -12,6 +12,7 @@ SRCS=\
      ReplayGain.cpp \
      TagLoaderTagLib.cpp \
      TagLibVFSStream.cpp \
+     ReplayGain.cpp \
 
 LIB=musictags.a
 
