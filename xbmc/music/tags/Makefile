@@ -9,6 +9,7 @@ SRCS=\
      MusicInfoTagLoaderShn.cpp \
      MusicInfoTagLoaderSPC.cpp \
      MusicInfoTagLoaderYM.cpp \
+     ReplayGain.cpp \
      TagLoaderTagLib.cpp \
      TagLibVFSStream.cpp \
 
